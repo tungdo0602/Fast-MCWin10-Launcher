@@ -1,2 +1,1 @@
-# MCWin10-Stuffs
-Minecraft Windows 10 tools,... 
+# Launch Minecraft Windows 10 faster
