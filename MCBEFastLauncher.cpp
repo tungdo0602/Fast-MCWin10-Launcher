@@ -97,7 +97,7 @@ int main()
     int c = 0;
     std::cout << "Starting Minecraft...\n";
     system("explorer shell:appsFolder\\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App");
-    while (c < 8) {
+    while (c < 10) {
         std::string pid = findPID("RuntimeBroker.exe", "Microsoft.MinecraftUWP");
         if (pid != "") {
             std::string cmd = "taskkill /F /PID " + pid;
