@@ -7,6 +7,8 @@
 #include <sstream>
 #include <vector>
 #include <format>
+#include <chrono>
+#include <thread>
 
 std::string exec(const char* cmd) {
     std::array<char, 128> buffer;
@@ -94,15 +96,20 @@ std::string findPID(std::string processName, std::string packageName) {
 
 int main()
 {
+    using namespace std::this_thread;
+    using namespace std::chrono_literals;
     int c = 0;
     std::cout << "Starting Minecraft...\n";
     system("explorer shell:appsFolder\\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App");
-    while (c < 10) {
+    while (c < 5) {
         std::string pid = findPID("RuntimeBroker.exe", "Microsoft.MinecraftUWP");
         if (pid != "") {
             std::string cmd = "taskkill /F /PID " + pid;
             std::cout << exec(cmd.c_str());
             c += 1;
+            if (c < 5){
+                sleep_for(1s);
+            }
         }
     }
     return 0;
