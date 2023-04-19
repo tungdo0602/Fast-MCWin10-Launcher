@@ -75,7 +75,7 @@ bool is_number(const std::string& s)
         s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
 }
 
-std::string findPID(std::string processName, std::string packageName) {
+std::string findPID(std::string processName, std::string packageName = "") {
     std::vector<std::string> raw = split(exec("tasklist /apps"), "=");
     std::string proc = strip(raw.back());
     std::vector<std::vector<std::string>> proclist;
@@ -102,13 +102,18 @@ int main()
     std::cout << "Starting Minecraft...\n";
     system("explorer shell:appsFolder\\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App");
     while (c < 5) {
-        std::string pid = findPID("RuntimeBroker.exe", "Microsoft.MinecraftUWP");
-        if (pid != "") {
-            std::string cmd = "taskkill /F /PID " + pid;
-            std::cout << exec(cmd.c_str());
-            c += 1;
-            if (c < 5){
-                sleep_for(1s);
+        if (findPID("Minecraft.Windows.exe") == "") {
+            c = 5;
+        }
+        else {
+            std::string pid = findPID("RuntimeBroker.exe", "Microsoft.MinecraftUWP");
+            if (pid != "") {
+                std::string cmd = "taskkill /F /PID " + pid;
+                std::cout << exec(cmd.c_str());
+                c += 1;
+                if (c < 5) {
+                    sleep_for(1s);
+                }
             }
         }
     }
